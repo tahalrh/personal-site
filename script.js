@@ -68,15 +68,27 @@ buttons.forEach(btn => {
     });
 });
 
-// Dark mode toggle
+// Dark mode toggle with localStorage
 const darkToggle = document.getElementById('dark-toggle');
-darkToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    if(document.body.classList.contains('dark')) {
+function setDarkMode(enabled) {
+    if (enabled) {
+        document.documentElement.classList.add('dark');
         darkToggle.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
     } else {
+        document.documentElement.classList.remove('dark');
         darkToggle.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
     }
+}
+darkToggle.addEventListener('click', () => {
+    setDarkMode(!document.documentElement.classList.contains('dark'));
+});
+// On page load, set theme from localStorage
+window.addEventListener('DOMContentLoaded', () => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') setDarkMode(true);
+    else setDarkMode(false);
 });
 
 // Typewriter effect for all paragraphs with .typewriter
